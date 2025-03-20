@@ -11,8 +11,10 @@ Module FileIO
         'WriteToFile()
         'AppendToFile()
         'ReadFromFile()
-        DocExample()
-        ReadAllRecords()
+        'DocExample()
+        'ReadAllRecords()
+        Console.WriteLine(RecordCounterIn("testfile.txt"))
+        Console.WriteLine(LineCountIn("testfile.txt"))
     End Sub
 
     Sub WriteToFile()
@@ -70,6 +72,7 @@ Module FileIO
 
     End Sub
 
+    'URL for the example: https://learn.microsoft.com/en-us/dotnet/api/microsoft.visualbasic.filesystem.write?view=netframework-4.7.2&f1url=%3FappId%3DDev17IDEF1%26l%3DEN-US%26k%3Dk(Microsoft.VisualBasic.FileSystem.Write)%3Bk(TargetFrameworkMoniker-.NETFramework%2CVersion%253Dv4.7.2)%3Bk(DevLang-VB)%26rd%3Dtrue
     Sub DocExample()
         ' Open file for output.
         FileOpen(1, "TestFile.txt", OpenMode.Output)
@@ -99,6 +102,13 @@ Module FileIO
         ' your system.
         WriteLine(1, aBool & " is a Boolean value.")
         WriteLine(1, aDate & " is a date.")
+
+        'JH was here
+        WriteLine(1)
+        Write(1, aBool)
+        Write(1, aDate)
+        Write(1, 5)
+        Write(1, 1.2345)
         ' Close the file.
         FileClose(1)
 
@@ -121,12 +131,49 @@ Module FileIO
             Do Until EOF(1)
                 count += 1
                 Input(1, currentRecord)
-                Console.WriteLine($"Record {count} contains {currentRecord}")
+                Console.WriteLine($"Record {count} contains {currentRecord}.")
             Loop
 
             FileClose(1)
         Catch ex As Exception
 
         End Try
+
     End Sub
+
+    Function RecordCounterIn(fileName As String) As Integer
+        Dim count As Integer
+        Try
+            FileOpen(1, fileName, OpenMode.Input)
+            Do Until EOF(1)
+
+                Input(1, "")
+                count += 1
+            Loop
+
+            FileClose(1)
+
+        Catch ex As Exception
+            count = -1
+        End Try
+        Return count
+    End Function
+
+    Function LineCountIn(fileName As String) As Integer
+        Dim count As Integer
+        Try
+            FileOpen(1, fileName, OpenMode.Input)
+            Do Until EOF(1)
+
+                LineInput(1)
+                count += 1
+            Loop
+
+            FileClose(1)
+
+        Catch ex As Exception
+            count = -1
+        End Try
+        Return count
+    End Function
 End Module
